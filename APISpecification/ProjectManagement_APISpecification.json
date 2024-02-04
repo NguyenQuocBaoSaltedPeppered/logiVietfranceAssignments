@@ -1,0 +1,473 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Project Management LOGIVIETFRANCE",
+    "description": "APIs for mangaging project lists of LOGIVIETFRANCE company",
+    "contact": {
+      "name": "LOGIVIETFRANCE JSC",
+      "url": "https://www.logi-vietfrance.com/",
+      "email": "didier.mercey@logi-vietfrance.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://virtserver.swaggerhub.com/nqbao2712/ProjectManagement/1.0.0",
+      "description": "SwaggerHub API Auto Mocking"
+    }
+  ],
+  "tags": [
+    {
+      "name": "admins",
+      "description": "Secured Admin-only calls"
+    },
+    {
+      "name": "developers",
+      "description": "Operations available to regular developers"
+    }
+  ],
+  "paths": {
+    "/projects": {
+      "get": {
+        "tags": [
+          "developers"
+        ],
+        "summary": "retrieve all projects",
+        "description": "Retrieve all the suitable projects in the database.\n",
+        "operationId": "getProjects",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "maximum number of records to return",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "maximum": 50,
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "number of records to skip for pagination",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "searchString",
+            "in": "query",
+            "description": "pass an optional search string for looking up project by name",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get all the suitable project",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Project"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "admins"
+        ],
+        "summary": "Create a new project",
+        "description": "Create a new project using the input data of the request\n",
+        "operationId": "createProject",
+        "requestBody": {
+          "description": "New project information.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Create successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": 400,
+                  "message": "Invalid input"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": 409,
+                  "message": "The project already exists in the system"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/{id}": {
+      "put": {
+        "tags": [
+          "developers"
+        ],
+        "summary": "Edit a project",
+        "description": "Edit a project information using the input data in path and body\n",
+        "operationId": "editProject",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The project id needs to be updated",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "d290f1ee-6c54-4b01-90e6-d701748f0851"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "New project information to be overwritten.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "404": {
+            "description": "Project Not Found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "admins"
+        ],
+        "summary": "Delete a project",
+        "description": "Delete a project by its id\n",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The project id needs to be deleted",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "d290f1ee-6c54-4b01-90e6-d701748f0851"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Project not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": 404,
+                  "message": "Project not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/{id}/employees": {
+      "post": {
+        "tags": [
+          "developers"
+        ],
+        "summary": "Add new employee of a project",
+        "description": "Add new member to a project\n",
+        "operationId": "addEmployeeForProject",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The project id needs to be added new employee",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "d290f1ee-6c54-4b01-90e6-d701748f0851"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "new employee information",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmployeeAddedInfo"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Added successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": 400,
+                  "message": "Invalid input"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Project not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": 404,
+                  "message": "Project not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Project": {
+        "required": [
+          "customerName",
+          "description",
+          "id",
+          "projectName",
+          "startDate"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "d290f1ee-6c54-4b01-90e6-d701748f0851"
+          },
+          "projectName": {
+            "type": "string",
+            "example": "eLogistics"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2016-08-29T09:12:33.001Z"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2016-09-29T09:12:33.001Z"
+          },
+          "projectPhases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectPhase"
+            }
+          }
+        }
+      },
+      "ProjectDTO": {
+        "required": [
+          "customerName",
+          "description",
+          "projectName",
+          "startDate"
+        ],
+        "type": "object",
+        "properties": {
+          "projectName": {
+            "type": "string",
+            "example": "eLogistics"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2016-08-29T09:12:33.001Z"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2016-09-29T09:12:33.001Z"
+          },
+          "projectPhases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectPhase"
+            }
+          }
+        }
+      },
+      "ProjectPhase": {
+        "required": [
+          "phaseCode",
+          "phaseName",
+          "startTime"
+        ],
+        "type": "object",
+        "properties": {
+          "phaseName": {
+            "type": "string",
+            "enum": [
+              "development",
+              "testing",
+              "maintenance"
+            ]
+          },
+          "phaseCode": {
+            "type": "string",
+            "enum": [
+              "DEV",
+              "TEST",
+              "MAINTAIN"
+            ]
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2016-08-29T09:12:33.001Z"
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2016-08-29T09:12:33.001Z"
+          },
+          "employees": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Employee"
+            }
+          }
+        }
+      },
+      "Employee": {
+        "required": [
+          "id",
+          "name",
+          "role"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "d21bb89a-f5b7-4df2-a916-63f24c767731"
+          },
+          "name": {
+            "type": "string",
+            "example": "Quyet"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "Dev",
+              "Tester",
+              "Manager"
+            ]
+          }
+        }
+      },
+      "EmployeeAddedInfo": {
+        "required": [
+          "id",
+          "phaseCode",
+          "projectId"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "a9243c87-9f74-43b1-b342-fe47fda2f9dd"
+          },
+          "projectId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "d290f1ee-6c54-4b01-90e6-d701748f0851"
+          },
+          "phaseCode": {
+            "type": "string",
+            "enum": [
+              "DEV",
+              "TEST",
+              "MAINTAIN"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
