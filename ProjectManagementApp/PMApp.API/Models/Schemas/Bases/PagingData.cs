@@ -24,7 +24,7 @@ namespace PMApp.API.Models.Schemas.Bases
         public Paging()
         {
             CurrentPage = 1;
-            PageSize = 10;
+            PageSize = 1;
             TotalPages = 1;
             TotalRecords = 0;
         }
@@ -34,7 +34,7 @@ namespace PMApp.API.Models.Schemas.Bases
         /// <param name="totalRecords">Tổng số bản ghi</param>
         /// <param name="currentPage">Trang hiện tại</param>
         /// <param name="pageSize">Kích thước 1 trang</param>
-        public Paging(int totalRecords, int currentPage, int pageSize = 10)
+        public Paging(int totalRecords, int currentPage, int pageSize = 1)
         {
             TotalRecords = totalRecords;
             PageSize = pageSize;

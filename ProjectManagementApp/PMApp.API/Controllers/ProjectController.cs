@@ -1,6 +1,7 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using PMApp.API.Models;
 using PMApp.API.Models.Schemas;
 using PMApp.API.Services;
 
@@ -28,9 +29,9 @@ public class ProjectController : ControllerBase
     [HttpGet(Name = "GetProject")]
     [ProducesResponseType(typeof(ListOfProject), (int)HttpStatusCode.OK)]
     [SwaggerOperation(Summary = "Retrieve all projects", Description = "Retrieve all the suitable projects in the database.\n")]
-    public IActionResult GetProjects()
+    public IActionResult GetProjects([FromQuery] ProjectFilter filter)
     {
-        ListOfProject returnedData = _projectService.GetProjects();
+        ListOfProject returnedData = _projectService.GetProjects(filter);
         return Ok(returnedData);
     }
 }

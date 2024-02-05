@@ -12,8 +12,8 @@ builder.Services.AddControllers().AddJsonOptions(options => {
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options => {
     // Enable XML comment on swaggerUI
-    // c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory,
-    // $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory,
+    $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
 
     // Enable using Swashbuckle.AspNetCore.Annotations
     options.EnableAnnotations();
