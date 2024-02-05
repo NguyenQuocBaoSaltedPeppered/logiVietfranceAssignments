@@ -68,7 +68,7 @@
             }
           },
           {
-            "name": "searchString",
+            "name": "search_string",
             "in": "query",
             "description": "pass an optional search string for looking up project by name",
             "required": false,
@@ -76,6 +76,40 @@
             "explode": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "sort_by",
+            "in": "query",
+            "description": "criteria for sorting",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "default": "projectId",
+              "enum": [
+                "projectId",
+                "projectName",
+                "projectStartDate",
+                "projectEndDate"
+              ]
+            }
+          },
+          {
+            "name": "order_by",
+            "in": "query",
+            "description": "sorting method",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "default": "asc",
+              "enum": [
+                "asc",
+                "desc"
+              ]
             }
           }
         ],
@@ -85,10 +119,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Project"
-                  }
+                  "$ref": "#/components/schemas/ListOfProjects"
                 }
               }
             }
@@ -465,6 +496,41 @@
               "TEST",
               "MAINTAIN"
             ]
+          }
+        }
+      },
+      "PagingData": {
+        "type": "object",
+        "properties": {
+          "currentPage": {
+            "type": "number",
+            "default": 1
+          },
+          "pageSize": {
+            "type": "number",
+            "default": 50
+          },
+          "totalRecords": {
+            "type": "number",
+            "example": 1000
+          },
+          "totalPages": {
+            "type": "number",
+            "example": 20
+          }
+        }
+      },
+      "ListOfProjects": {
+        "type": "object",
+        "properties": {
+          "Data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Project"
+            }
+          },
+          "Paging": {
+            "$ref": "#/components/schemas/PagingData"
           }
         }
       }
