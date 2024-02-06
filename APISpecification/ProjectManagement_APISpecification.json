@@ -41,7 +41,7 @@
         "operationId": "getProjects",
         "parameters": [
           {
-            "name": "limit",
+            "name": "Limit",
             "in": "query",
             "description": "maximum number of records to return",
             "required": false,
@@ -55,7 +55,7 @@
             }
           },
           {
-            "name": "offset",
+            "name": "Offset",
             "in": "query",
             "description": "number of records to skip for pagination",
             "required": false,
@@ -68,7 +68,7 @@
             }
           },
           {
-            "name": "search_string",
+            "name": "SearchString",
             "in": "query",
             "description": "pass an optional search string for looking up project by name",
             "required": false,
@@ -79,7 +79,7 @@
             }
           },
           {
-            "name": "sort_by",
+            "name": "SortBy",
             "in": "query",
             "description": "criteria for sorting",
             "required": false,
@@ -97,7 +97,7 @@
             }
           },
           {
-            "name": "order_by",
+            "name": "OrderBy",
             "in": "query",
             "description": "sorting method",
             "required": false,
@@ -149,7 +149,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Project"
+                  "$ref": "#/components/schemas/ResponseInfo"
                 }
               }
             }
@@ -158,20 +158,18 @@
             "description": "Invalid input",
             "content": {
               "application/json": {
-                "example": {
-                  "error": 400,
-                  "message": "Invalid input"
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseInfo"
                 }
               }
             }
           },
           "409": {
-            "description": "Conflict",
+            "description": "The project already existed in the system.",
             "content": {
               "application/json": {
-                "example": {
-                  "error": 409,
-                  "message": "The project already exists in the system"
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseInfo"
                 }
               }
             }
@@ -214,13 +212,44 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseInfo"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Invalid input"
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseInfo"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Project Not Found"
+            "description": "Project Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseInfo"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The project already existed in the system.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseInfo"
+                }
+              }
+            }
           }
         }
       },
@@ -246,15 +275,21 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseInfo"
+                }
+              }
+            }
           },
           "404": {
             "description": "Project not found",
             "content": {
               "application/json": {
-                "example": {
-                  "error": 404,
-                  "message": "Project not found"
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseInfo"
                 }
               }
             }
@@ -324,6 +359,16 @@
                 "example": {
                   "error": 404,
                   "message": "Project not found"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Employee already existed in project phase",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseInfo"
                 }
               }
             }
@@ -454,8 +499,7 @@
         "properties": {
           "id": {
             "type": "string",
-            "format": "uuid",
-            "example": "d21bb89a-f5b7-4df2-a916-63f24c767731"
+            "example": "E001"
           },
           "name": {
             "type": "string",
@@ -474,20 +518,13 @@
       "EmployeeAddedInfo": {
         "required": [
           "id",
-          "phaseCode",
-          "projectId"
+          "phaseCode"
         ],
         "type": "object",
         "properties": {
           "id": {
             "type": "string",
-            "format": "uuid",
-            "example": "a9243c87-9f74-43b1-b342-fe47fda2f9dd"
-          },
-          "projectId": {
-            "type": "string",
-            "format": "uuid",
-            "example": "d290f1ee-6c54-4b01-90e6-d701748f0851"
+            "example": "E001"
           },
           "phaseCode": {
             "type": "string",
@@ -531,6 +568,25 @@
           },
           "Paging": {
             "$ref": "#/components/schemas/PagingData"
+          }
+        }
+      },
+      "ResponseInfo": {
+        "type": "object",
+        "properties": {
+          "StatusCode": {
+            "type": "number",
+            "default": 200
+          },
+          "Message": {
+            "type": "string",
+            "description": "Message for the response"
+          },
+          "ResponseData": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
           }
         }
       }
