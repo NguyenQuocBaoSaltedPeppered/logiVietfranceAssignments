@@ -5,7 +5,7 @@ namespace PMApp.API.Models.Schemas
     public class ProjectFilter : BaseFilter
     {
         public ProjectFilter() {
-            
+            Limit = 1;
         }
         /// <summary>
         /// Criteria for sorting

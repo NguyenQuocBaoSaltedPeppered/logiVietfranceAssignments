@@ -4,6 +4,18 @@ namespace PMApp.API.Models.Schemas
 {
     public class Project
     {
+        public Project()
+        {}
+        public Project(ProjectDTO projectData)
+        {
+            Id = Guid.NewGuid();
+            ProjectName = projectData.ProjectName;
+            Description = projectData.Description;
+            CustomerName = projectData.CustomerName;
+            StartDate = projectData.StartDate;
+            EndDate = projectData.EndDate;
+            ProjectPhases = projectData.ProjectPhases;
+        }
         /// <summary>
         /// Id dự án
         /// </summary>
