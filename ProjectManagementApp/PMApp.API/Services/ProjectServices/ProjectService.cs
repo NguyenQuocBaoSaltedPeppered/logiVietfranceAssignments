@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using PMApp.API.Enum;
@@ -35,12 +36,33 @@ namespace PMApp.API.Services
                         || project.CustomerName.Contains(filter.SearchString, StringComparison.OrdinalIgnoreCase)
                     ).ToList();
             }
-            int count = result.Count;
+            if(string.IsNullOrEmpty(filter.SortBy))
+            {
+                filter.SortBy = "ProjectName";
+            }
+            if(string.IsNullOrEmpty(filter.OrderBy))
+            {
+                filter.OrderBy = "asc";
+            }
+            PropertyInfo property = typeof(Project).GetProperty(filter.SortBy);
+            var sortedResult = result;
+            if(property != null)
+            {
+                if(filter.OrderBy.ToLower() == "asc")
+                {
+                    sortedResult = result.OrderBy(project => property.GetValue(project)).ToList();
+                }
+                else
+                {
+                    sortedResult = result.OrderByDescending(project => property.GetValue(project)).ToList();
+                }
+            }
+            int count = sortedResult.Count;
             ListOfProject returnedData = new()
             {
                 Paging = new(count, filter.Offset, filter.Limit)
             };
-            returnedData.Datas = result
+            returnedData.Datas = sortedResult
                 .Skip((returnedData.Paging.CurrentPage - 1) * returnedData.Paging.PageSize)
                 .Take(returnedData.Paging.PageSize)
                 .ToList();
