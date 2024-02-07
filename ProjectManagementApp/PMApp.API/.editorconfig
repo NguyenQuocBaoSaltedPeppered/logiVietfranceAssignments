@@ -1,0 +1,87 @@
+# File .editorconfig mẫu cho dự án .NET
+root = true
+# Đặt bộ mã của các file thành UTF-8
+[*]
+charset = utf-8
+
+# Sử dụng dấu cách thay vì tab để thụt đầu dòng
+[*.{cs,xml,json}]
+indent_style = space
+indent_size = 4
+
+# Chỉ định dòng kết thúc là LF (kiểu Unix)
+[*]
+end_of_line = lf
+
+# Loại bỏ dấu cách dư thừa ở cuối dòng
+[*]
+trim_trailing_whitespace = true
+
+# Đảm bảo có một dòng trống ở cuối mỗi file
+[*]
+insert_final_newline = true
+
+# Chỉ định chiều dài tối đa của mỗi dòng
+[*.{cs,xml,json}]
+max_line_length = 150
+
+# Cấu hình riêng cho C#
+[*.cs]
+# Thêm dấu cách trong dấu ngoặc của các câu lệnh kiểm soát (if, for, while, v.v.)
+space_after_colon_in_inheritance_clause = true
+
+# Thêm dấu cách trong dấu ngoặc của các cuộc gọi và khai báo phương thức
+space_after_colon_in_method_declaration = true
+space_after_comma = true
+
+# Thêm dấu cách sau từ khóa trong các câu lệnh kiểm soát
+space_after_keywords_in_control_flow_statements = true
+
+# Đặt dấu ngoặc mở trên một dòng mới
+# Ví dụ: class, method, property, v.v.
+csharp_new_line_before_open_brace = all
+
+# Loại bỏ dấu cách trong ngoặc vuông
+space_within_square_brackets = false
+
+# Chỉ định quy tắc đặt tên
+dotnet_naming_style.pascal_case.capitalization = PascalCase
+dotnet_naming_style.lower_case.capitalization = lower_case
+dotnet_naming_style.camel_case.capitalization = camelCase
+dotnet_naming_style.upper_case.capitalization = UPPER_CASE
+
+# Quy tắc đặt tên cho thành phần của class
+dotnet_naming_rule.types_should_be_pascal_case.severity = error
+dotnet_naming_rule.types_should_be_pascal_case.symbols = types
+dotnet_naming_rule.types_should_be_pascal_case.style = pascal_case
+
+# Quy tắc đặt tên cho thành phần của hàm
+dotnet_naming_rule.methods_should_be_camel_case.severity = error
+dotnet_naming_rule.methods_should_be_camel_case.symbols = methods
+dotnet_naming_rule.methods_should_be_camel_case.style = camel_case
+
+dotnet_naming_rule.interface_should_be_begins_with_i.severity = suggestion
+dotnet_naming_rule.interface_should_be_begins_with_i.symbols = interface
+dotnet_naming_rule.types_should_be_pascal_case.severity = suggestion
+dotnet_naming_rule.types_should_be_pascal_case.symbols = types
+
+# Cảnh báo khi một tham số không được sử dụng
+dotnet_code_quality_unused_parameters = all:warning
+
+# Kiểm tra giá trị null
+dotnet_style_coalesce_expression = true:warning
+dotnet_style_null_propagation = true:warning
+dotnet_style_prefer_is_null_check_over_reference_equality_method = true:warning
+
+# Import
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = false
+
+# Namspace match folder
+dotnet_style_namespace_match_folder = true:suggestion
+
+csharp_new_line_before_open_brace = all
+csharp_new_line_before_else = true
+csharp_new_line_before_catch = true
+csharp_new_line_before_finally = true
+csharp_space_after_comma = true
